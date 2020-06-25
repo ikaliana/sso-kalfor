@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,3 +25,15 @@ Route::middleware('auth:api')->group(function () {
 // Route::middleware('auth:api')->get('/user','SsoServiceController@GetUserInfo');
 // Route::middleware('auth:api')->post('/logout','SsoServiceController@Logout');
 
+//tambahan taufiq
+Route::get('/users', 'UserController@listUser');
+Route::get('/users/{id}', 'UserController@singleUser');
+Route::post('/users', 'UserController@addUser');
+Route::put('/users/{id}', 'UserController@updUser');
+Route::delete('/users/{id}', 'UserController@delUser');
+
+Route::get('/roles', 'RolesController@listRoles');
+Route::get('/roles/{id}', 'RolesController@singleRole');
+Route::post('/roles', 'RolesController@addRole');
+Route::put('/roles/{id}', 'RolesController@updRole');
+Route::delete('/roles/{id}', 'RolesController@delRole');
