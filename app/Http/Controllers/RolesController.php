@@ -8,21 +8,28 @@ use Illuminate\Support\Facades\DB;
 
 class RolesController extends Controller
 {
+    protected function return_error($msg,$http_code)
+    {
+        response()->json(['error' => $msg], $http_code);
+    }
+
     public function listRoles()
     {
  		$role = Role::all();
-    	echo $role;
+    	//echo $role;
+        return $role;
     }
 
     public function singleRole($id)
     {	
     	if (is_null($id)){
-    		return "Maaf, input tidak lengkap.";
+    		return $this->return_error("Input tidak lengkap",400);
     	}else{
     		if ($role=Role::find($id)){
-		    	echo $role;
+		    	//echo $role;
+                return $role;
     		}else{
-    			return "Maaf, role tidak ditemukan.";
+    			return $this->return_error("Role tidak ditemukan",400);
     		}
     	}
     }
@@ -33,21 +40,23 @@ class RolesController extends Controller
     	$role->name = $request->name;
     	$role->save();
 
-    	return "Role berhasil dibuat";
+    	//return "Role berhasil dibuat";
+        return response()->json($role, 201);
     }
 
     public function updRole(request $request,$id)
     {	
     	if (is_null($id) or is_null($request->name)){
-    		return "Maaf, input tidak lengkap.";
+    		return $this->return_error("Input tidak lengkap",400);
     	}else{
     		if ($role=Role::find($id)){
     			$role->name = $request->name;
     			$role->save();
 
-    			return "Role berhasil diperbarui";
+    			//return "Role berhasil diperbarui";
+                return $role;
     		}else{
-    			return "Maaf, role tidak ditemukan.";
+    			return $this->return_error("Role tidak ditemukan",400);
     		}
     	}
     }
@@ -55,13 +64,14 @@ class RolesController extends Controller
     public function delRole($id)
     {	
     	if (is_null($id)){
-    		return "Maaf, input tidak lengkap.";
+    		return $this->return_error("Input tidak lengkap",400);
     	}else{
     		if ($role=Role::find($id)){
     			$role->delete();
-    			return "Role berhasil dihapus.";
+    			echo "Role berhasil dihapus.";
+                return response()->json(null, 204);
     		}else{
-    			return "Maaf, role tidak ditemukan.";
+    			return $this->return_error("Role tidak ditemukan",400);
     		}
     	}	
     }

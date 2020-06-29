@@ -10,21 +10,28 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    protected function return_error($msg,$http_code)
+    {
+        response()->json(['error' => $msg], $http_code);
+    }
+
     public function listUser()
     {
  		$users=User::all();
-    	echo $users;
+    	//echo $users;
+        return $users;
     }
 
     public function singleUser($id)
     {	
     	if (is_null($id)){
-    		return "Maaf, input tidak lengkap.";
+    		return $this->return_error("Input tidak lengkap",400);
     	}else{
     		if ($user=User::find($id)){
-		    	echo $user;
+		    	//echo $user;
+                return $user;
     		}else{
-    			return "Maaf, user tidak ditemukan.";
+    			return $this->return_error("User tidak ditemukan",400);
     		}
     	}	
     }
@@ -43,13 +50,15 @@ class UserController extends Controller
     	$roleUser->role_id = $request->role_id;
     	$roleUser->save();
 
-    	return "User berhasil dibuat";
+    	//return "User berhasil dibuat";
+        $roles = $user->roles;
+        return response()->json($user, 201);
     }
 
     public function updUser(request $request,$id)
     {	
     	if (is_null($id) or is_null($request->name) or is_null($request->email) or is_null($request->password)){
-    		echo "Maaf, input tidak lengkap.";
+    		return $this->return_error("Input tidak lengkap",400);
     	}else{
     		if ($user=User::find($id)){
     			$user->name = $request->name;
@@ -57,22 +66,22 @@ class UserController extends Controller
 		    	$user->password = Hash::make($request->password);
     			$user->save();
 
-    			echo "User berhasil diperbarui.";
+    			echo "User berhasil diperbarui";
     		}else{
-    			echo "Maaf, user tidak ditemukan.";
+    			return $this->return_error("User tidak ditemukan",400);
     		}
     		if ($roleUser=RoleUser::where('user_id',$id)->first()){
     			$roleUser->role_id = $request->role_id;
     			$roleUser->save();
 
-    			echo "User role berhasil diperbarui.";
+    			echo "User role berhasil diperbarui";
     		}else{
     			$roleUser = new RoleUser;
     			$roleUser->user_id = $id;
     			$roleUser->role_id = $request->role_id;
     			$roleUser->save();
 
-    			echo "User role berhasil diperbarui.";
+    			echo "User role berhasil diperbarui";
     		}
     	}
     }
@@ -80,23 +89,25 @@ class UserController extends Controller
     public function delUser($id)
     {	
     	if (is_null($id)){
-    		return "Maaf, input tidak lengkap.";
+    		return $this->return_error("Input tidak lengkap",400);
     	}else{
     		if ($user=User::find($id)){
     			$user->delete();
 
-    			echo "User berhasil dihapus.";
+    			echo "User berhasil dihapus";
+                return response()->json(null, 204);
     		}else{
-    			echo "Maaf, user tidak ditemukan.";
+    			return $this->return_error("User tidak ditemukan",400);
     		}
     	}
     	if ($roleUser=RoleUser::where('user_id',$id)->first()){
     			$roleUser->delete();
 
-    			echo "User role berhasil dihapus.";
+    			echo "User role berhasil dihapus";
+                return response()->json(null, 204);
     		}else{
 
-    			echo "Maaf, user role tidak ditemukan.";
+    			return $this->return_error("User role tidak ditemukan",400);
     		}
     }
 
