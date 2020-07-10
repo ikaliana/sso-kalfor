@@ -28,6 +28,11 @@ class LogoutHelper {
 		    \Session::forget('laravel_session');
 		    //\Session::flush();
 
+		    if ($request->wantsJson()) return new JsonResponse(['message' => 'Logout'], 200);
+
+        	Auth::logout();
+        	return redirect('/');
+
 		}
 		else {
 
