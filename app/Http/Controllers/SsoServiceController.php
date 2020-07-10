@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Auth;
 use Cookie;
 use App\LogoutHelper;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class SsoServiceController extends Controller
@@ -15,7 +15,7 @@ class SsoServiceController extends Controller
         return view('settings');
     }
 
-    //Called only using API
+    //Hanya digunakan via API/POST. Fungsi untuk mendapatkan info user yg sedang login
     public function GetUserInfo(Request $request) 
     {
         if (Auth::check()) {
@@ -24,9 +24,10 @@ class SsoServiceController extends Controller
 
             return $user;
         }
-		else return response()->json(['data' => 'API: Unauthenticated User'], 401);
+		else return response()->json(['error' => 'API: Unauthenticated User'], 401);
 	}
 
+    //Hanya digunakan via API/POST (lihat di Route API). Fungsi logout
 	public function Logout(Request $request)
 	{
         $helper = new LogoutHelper();
