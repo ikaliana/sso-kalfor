@@ -44,8 +44,8 @@ class LoginController extends Controller
     public function logout(Request $request) 
     {
         $helper = new LogoutHelper();
-        $helper->Logout($request);
+        return $helper->Logout($request);
 
-        return redirect('/');
+        //return redirect('/');
     }
 }
