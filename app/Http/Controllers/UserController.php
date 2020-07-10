@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\RoleUser;
+use App\Rules\MatchOldPassword;
+use App\Providers\RouteServiceProvider;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+
 
 class UserController extends Controller
 {
@@ -109,6 +114,28 @@ class UserController extends Controller
 
     			return $this->return_error("User role tidak ditemukan",400);
     		}
+    }
+
+
+    //Digunakan untuk WEB/GET method. Fungsi untuk menampilkan change password form.
+    public function showChangePasswordForm() {
+        return view('auth.passwords.change');
+    }
+
+    public function submitChangePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => ['required', new MatchOldPassword],
+            'new_password' => ['required'],
+            'new_confirm_password' => ['same:new_password'],
+        ]);
+
+        User::find(auth()->user()->id)->update(['password'=> Hash::make($request->new_password)]);
+
+        //session('status')
+        session()->put('status', 'You have successfully change your password!');
+
+        return redirect('/home');
     }
 
 }
