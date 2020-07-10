@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-        	Logging out....            
+        	Logging out.... please wait!           
         </div>
     </div>
     <form id="logout-auto" action="{{ route('logout') }}" method="POST" style="display: none;">
