@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,8 +20,33 @@ use Illuminate\Support\Facades\Log;
 Route::middleware('auth:api')->group(function () {
     Route::get('/user','SsoServiceController@GetUserInfo');
     Route::post('/logout','SsoServiceController@Logout');
+
+	//tambahan taufiq
+	//USER MANAGEMENT
+	Route::get('/users', 'UserController@listUser');
+	Route::get('/users/{id}', 'UserController@singleUser');
+	Route::post('/users', 'UserController@addUser');
+	Route::put('/users/{id}', 'UserController@updUser');
+	Route::delete('/users/{id}', 'UserController@delUser');
+
+	//ROLE MANAGEMENT
+	Route::get('/roles', 'RolesController@listRoles');
+	Route::get('/roles/{id}', 'RolesController@singleRole');
+	Route::post('/roles', 'RolesController@addRole');
+	Route::put('/roles/{id}', 'RolesController@updRole');
+	Route::delete('/roles/{id}', 'RolesController@delRole');
+
+	//APPLICATION MANAGEMENT
+	Route::get('/applications', 'ApplicationController@list');
+	Route::get('/applications/{id}', 'ApplicationController@get');
+	Route::post('/applications', 'ApplicationController@create');
+	Route::put('/applications/{id}', 'ApplicationController@update');
+	Route::delete('/applications/{id}', 'ApplicationController@delete');
+
 });
 
 // Route::middleware('auth:api')->get('/user','SsoServiceController@GetUserInfo');
 // Route::middleware('auth:api')->post('/logout','SsoServiceController@Logout');
 
+//Route::post('/resetpassword', 'UserController@sendResetLinkEmail');
+Route::post('/resetpassword', 'Auth\ForgotPasswordController@sendResetLinkEmail');

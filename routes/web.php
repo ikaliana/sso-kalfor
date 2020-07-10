@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect( Auth::check() ? 'login' : 'home' );
+    //return view('welcome');
 });
 
 Auth::routes();
@@ -22,3 +24,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/logoutsso', 'SsoServiceController@Logout')->name('logoutsso');
 Route::middleware('auth')->get('/settings', 'SsoServiceController@Settings')->name('settings');
+Route::middleware('auth')->get('/password/change', 'UserController@showChangePasswordForm')->name('changepasswordget');
+Route::middleware('auth')->post('/password/change', 'UserController@submitChangePassword')->name('changepasswordpost');
