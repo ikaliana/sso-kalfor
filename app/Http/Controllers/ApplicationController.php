@@ -26,6 +26,9 @@ class ApplicationController extends Controller
     public function get($id) 
     {
     	$app = Application::find($id);
+
+        if(is_null($app)) return $this->return_error('Applikasi tidak ditemukan',404);
+
     	return $app;
     }
 
@@ -56,7 +59,6 @@ class ApplicationController extends Controller
     public function update(request $request, $id) 
     {
     	$this->validate_mandatory($request);
-    	Log::info($request);
 
     	if($app=Application::find($id)) {
 	    	$is_native = $app->is_native;
