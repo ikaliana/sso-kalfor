@@ -68,7 +68,7 @@ class RolesController extends Controller
     	}else{
     		if ($role=Role::find($id)){
     			$role->delete();
-    			echo "Role berhasil dihapus.";
+    			// echo "Role berhasil dihapus.";
                 return response()->json(null, 204);
     		}else{
     			return $this->return_error("Role tidak ditemukan",400);
