@@ -45,8 +45,11 @@ Route::middleware('auth:api')->group(function () {
 
 });
 
-// Route::middleware('auth:api')->get('/user','SsoServiceController@GetUserInfo');
-// Route::middleware('auth:api')->post('/logout','SsoServiceController@Logout');
+Route::get('/apps', 'ApplicationController@list');
+Route::get('/apps/{id}', 'ApplicationController@get');
+Route::post('/apps', 'ApplicationController@create');
+Route::put('/apps/{id}', 'ApplicationController@update');
+Route::delete('/apps/{id}', 'ApplicationController@delete');
 
 //Route::post('/resetpassword', 'UserController@sendResetLinkEmail');
 Route::post('/resetpassword', 'Auth\ForgotPasswordController@sendResetLinkEmail');
