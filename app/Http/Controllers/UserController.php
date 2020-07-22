@@ -99,7 +99,7 @@ class UserController extends Controller
     		if ($user=User::find($id)){
     			$user->delete();
 
-    			echo "User berhasil dihapus";
+    			// echo "User berhasil dihapus";
                 return response()->json(null, 204);
     		}else{
     			return $this->return_error("User tidak ditemukan",400);
@@ -108,7 +108,7 @@ class UserController extends Controller
     	if ($roleUser=RoleUser::where('user_id',$id)->first()){
     			$roleUser->delete();
 
-    			echo "User role berhasil dihapus";
+    			// echo "User role berhasil dihapus";
                 return response()->json(null, 204);
     		}else{
 
