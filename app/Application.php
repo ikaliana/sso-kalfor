@@ -29,4 +29,9 @@ class Application extends Client
     {
         $this->revoked= !$value;
     }
+
+    public function modules()
+    {
+        return $this->hasMany('App\Module','client_id');
+    }
 }
