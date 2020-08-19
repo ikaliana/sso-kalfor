@@ -20,7 +20,9 @@ class ApplicationController extends Controller
     }
 
     public function list() {
-    	return Application::whereNotIn('id', [1,2])->get();
+    	//return Application::whereNotIn('id', [1,2])->get();
+        return Application::all();
+        //return Application::with('modules')->get();
     }
 
     public function get($id) 
