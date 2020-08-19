@@ -20,7 +20,19 @@ class SsoServiceController extends Controller
     {
         if (Auth::check()) {
             $user = $request->user();
-            $roles = $user->roles;
+            $user->makeHidden('email_verified_at','created_at','updated_at');
+
+            //$roles = $user->roles;
+            //foreach ($user->roles as $role) $role->load('modules');
+            //$user->load('roles.modules.application');
+
+            foreach ($user->roles as $role) {
+                foreach($role->modules as $module) {
+                    $module->load('application:id,name');
+                    $module->makeHidden('client_id');
+                }
+                // $role->load('modules');
+            }
 
             return $user;
         }
