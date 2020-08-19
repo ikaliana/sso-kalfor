@@ -16,7 +16,7 @@ class RolesController extends Controller
     public function listRoles()
     {
  		$role = Role::all();
-    	//echo $role;
+        // $role = Role::with('modules')->get();
         return $role;
     }
 
