@@ -43,6 +43,10 @@ Route::middleware('auth:api')->group(function () {
 	Route::put('/applications/{id}', 'ApplicationController@update');
 	Route::delete('/applications/{id}', 'ApplicationController@delete');
 
+	Route::get('/modules', 'ModulesController@list');
+	Route::post('/modules', 'ModulesController@create');
+	Route::delete('/modules/{id}', 'ModulesController@delete');
+
 });
 
 Route::get('/apps', 'ApplicationController@list');
