@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class ModuleSeeder extends Seeder
 {
@@ -11,19 +13,16 @@ class ModuleSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('modules')->insert(
+        DB::table('modules')->insert([
             ['name' => 'Quisioner Builder', 'client_id' => 2, 'address' => '/builder'],
             ['name' => 'Report', 'client_id' => 2, 'address' => '/report'],
-            ['name' => 'Data Collection', 'client_id' => 2, '/collect' => ''],
+            ['name' => 'Data Collection', 'client_id' => 2, 'address' => '/collect'],
             ['name' => 'Dashboard', 'client_id' => 2, 'address' => '/dashboard'],
             ['name' => 'Data Survey', 'client_id' => 2, 'address' => '/survey'],
-        );
-
-        DB::table('modules')->insert(
             ['name' => 'Dashboard', 'client_id' => 3, 'address' => '/dashboard'],
             ['name' => 'Program', 'client_id' => 3, 'address' => '/program'],
             ['name' => 'Event', 'client_id' => 3, 'address' => '/event'],
-            ['name' => 'Absensi', 'client_id' => 3, '/absensi' => ''],
+            ['name' => 'Absensi', 'client_id' => 3, '/absensi' => '/absensi'],
             ['name' => 'Presentasi', 'client_id' => 3, 'address' => '/presentasi'],
             ['name' => 'Gambar', 'client_id' => 3, 'address' => '/gambar'],
             ['name' => 'TOR', 'client_id' => 3, 'address' => '/tor'],
@@ -35,6 +34,7 @@ class ModuleSeeder extends Seeder
             ['name' => 'Program Data Input', 'client_id' => 3, 'address' => '/input'],
             ['name' => 'Kompilasi Data', 'client_id' => 3, 'address' => '/kompilasi'],
             ['name' => 'Laporan', 'client_id' => 3, 'address' => '/laporan'],
-        );
+        ]);
+
     }
 }
