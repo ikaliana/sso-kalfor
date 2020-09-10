@@ -17,7 +17,7 @@ class Module extends Model
 
     public function roles()
     {
-    	return $this->belongsToMany('App\Role','module_role','role_id','module_id')
+    	return $this->belongsToMany('App\Role','module_role','role_id','module_id')->as('access_mode')
                     ->withPivot('create', 'read', 'update', 'delete');
     }
 }
