@@ -30,7 +30,7 @@ class Application extends Client
         $this->revoked= !$value;
     }
 
-    public function modules()
+    public function menus()
     {
         return $this->hasMany('App\Module','client_id');
     }
