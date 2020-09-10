@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Log;
 */
 
 Route::middleware('auth:api')->group(function () {
-    Route::get('/user','SsoServiceController@GetUserInfo');
+    Route::get('/user','SsoServiceController@GetUserInfo')->middleware('verified');
     Route::post('/logout','SsoServiceController@Logout');
 
 	//tambahan taufiq
@@ -47,6 +47,9 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('/modules', 'ModulesController@create');
 	Route::delete('/modules/{id}', 'ModulesController@delete');
 
+	//CHANGE PASSWORD
+	Route::post('/password/change', 'UserController@submitChangePassword');
+
 });
 
 Route::get('/apps', 'ApplicationController@list');
@@ -55,5 +58,5 @@ Route::post('/apps', 'ApplicationController@create');
 Route::put('/apps/{id}', 'ApplicationController@update');
 Route::delete('/apps/{id}', 'ApplicationController@delete');
 
-//Route::post('/resetpassword', 'UserController@sendResetLinkEmail');
-Route::post('/resetpassword', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+Route::post('/password/reset', 'UserController@resetPassword');
+Route::post('/users/register', 'UserController@registerUser');
