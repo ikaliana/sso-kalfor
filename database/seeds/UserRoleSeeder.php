@@ -26,7 +26,7 @@ class UserRoleSeeder extends Seeder
         $guest1 = DB::table('users')->where('email', 'guest01@mail.com')->value('id');
         $guest2 = DB::table('users')->where('email', 'guest02@mail.com')->value('id');
 
-        DB::table('role_user')->insert(
+        DB::table('role_user')->insert([
             [ 'user_id' => $admin, 'role_id' => $role_admin_id ],
             [ 'user_id' => $klhk1, 'role_id' => $role_klhk_id ],
             [ 'user_id' => $klhk2, 'role_id' => $role_klhk_id ],
@@ -34,6 +34,6 @@ class UserRoleSeeder extends Seeder
             [ 'user_id' => $reg2, 'role_id' => $role_registrant_id ],
             [ 'user_id' => $guest1, 'role_id' => $role_guest_id ],
             [ 'user_id' => $guest2, 'role_id' => $role_guest_id ],
-        );
+        ]);
     }
 }
