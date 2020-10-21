@@ -76,23 +76,37 @@ class UserController extends Controller
 
     private function newUser($name,$email,$password,$role_id)
     {
-        $user = new User();
-        $user->name = $name;
-        $user->email = $email;
-        $user->password = Hash::make($password);
-        $user->save();
+        try {
+            \DB::beginTransaction();
+            $user = new User();
+            $user->name = $name;
+            $user->email = $email;
+            $user->password = Hash::make($password);
+            $user->save();
 
-        //get user id
-        $roleUser = new RoleUser();
-        $roleUser->user_id = $user->id;
-        $roleUser->role_id = $role_id;
-        $roleUser->save();
+            //get user id
+            $roleUser = new RoleUser();
+            $roleUser->user_id = $user->id;
+            $roleUser->role_id = $role_id;
+            $roleUser->save();
 
-        //return "User berhasil dibuat";
-        $roles = $user->load('roles');
+            //return "User berhasil dibuat";
+            $roles = $user->load('roles');
 
-        $user->sendEmailVerificationNotification();
-        return response()->json($user, 201);
+            $user->sendEmailVerificationNotification();
+
+            \DB::commit();
+            return response()->json($user, 201);
+        } catch (Throwable $e) {
+            \DB::rollback();
+
+            $response = [
+                'message' => 'User baru tidak berhasil dibuat. Silahkan periksa log untuk detil errornya.',
+                'errors' => 'Gagal menambahkan user baru!'
+            ];
+
+            return response()->json($response,400)->send();
+        }
     }
 
     public function updUser(request $request,$id)
@@ -200,15 +214,30 @@ class UserController extends Controller
 
         if ($user = User::where('email', $this->email)->first())
         {
-            $faker = Faker::create();
-            $new_password = $faker->password;
+            try {
+                \DB::beginTransaction();
 
-            $user->password = Hash::make($new_password);
-            $user->save();
+                $faker = Faker::create();
+                $new_password = $faker->password;
 
-            $this->notify(new \App\Notifications\MailResetPasswordNotification($new_password));
+                $user->password = Hash::make($new_password);
+                $user->save();
 
-            return response()->json([ 'message' => 'Password reset email sent.' ], 200);
+                $this->notify(new \App\Notifications\MailResetPasswordNotification($new_password));
+
+                \DB::commit();
+                return response()->json([ 'message' => 'Password reset email sent.' ], 200);
+
+            } catch (Throwable $e) {
+                \DB::rollback();
+
+                $response = [
+                    'message' => 'Something wrong while reseting your password. Please see error log for detail',
+                    'errors' => 'Reset password failed!'
+                ];
+
+                return response()->json($response,400)->send();
+            }
         } else {
             return $this->return_error("User tidak ditemukan",400);
         }
