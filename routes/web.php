@@ -31,3 +31,7 @@ Route::middleware('auth')->post('/password/change', 'UserController@submitChange
 Route::middleware('auth')->get('/applications', function () {
     return view('applications');
 })->name('applications')->middleware('verified');
+
+Route::get('/user/verified', function () {
+    return view('verified');
+})->name('user.verified')->middleware('verified');
