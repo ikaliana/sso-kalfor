@@ -17,9 +17,10 @@ use Illuminate\Support\Facades\Log;
 |
 */
 
-Route::middleware('auth:api')->group(function () {
-    Route::get('/user','SsoServiceController@GetUserInfo')->middleware('verified');
-    Route::post('/logout','SsoServiceController@Logout');
+// Route::middleware('auth:api')->group(function () {
+Route::group(['middleware' => ['auth:api', 'verified']], function () {
+    Route::get('/user','SsoServiceController@GetUserInfo');
+    // Route::post('/logout','SsoServiceController@Logout');
 
 	//tambahan taufiq
 	//USER MANAGEMENT
@@ -52,11 +53,13 @@ Route::middleware('auth:api')->group(function () {
 
 });
 
+Route::middleware('verified')->post('/password/reset', 'UserController@resetPassword');
+Route::middleware('auth:api')->post('/logout','SsoServiceController@Logout');
+Route::post('/users/register', 'UserController@registerUser');
+
 Route::get('/apps', 'ApplicationController@list');
 Route::get('/apps/{id}', 'ApplicationController@get');
 Route::post('/apps', 'ApplicationController@create');
 Route::put('/apps/{id}', 'ApplicationController@update');
 Route::delete('/apps/{id}', 'ApplicationController@delete');
 
-Route::post('/password/reset', 'UserController@resetPassword');
-Route::post('/users/register', 'UserController@registerUser');
