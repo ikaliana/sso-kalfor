@@ -11,6 +11,9 @@
         @csrf
     </form>
 </div>
+@endsection
+
+@section('js')
 <script type="text/javascript">
 	function getUrlParameter(name) {
 	    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
