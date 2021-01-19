@@ -20,18 +20,30 @@ Route::get('/', function () {
     //return view('welcome');
 });
 
-Auth::routes(['verify' => true]);
-
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/logoutsso', 'SsoServiceController@Logout')->name('logoutsso');
-Route::middleware('auth')->get('/settings', 'SsoServiceController@Settings')->name('settings');
-Route::middleware('auth')->get('/password/change', 'UserController@showChangePasswordForm')->name('changepasswordget');
-Route::middleware('auth')->post('/password/change', 'UserController@submitChangePassword')->name('changepasswordpost');
 
-Route::middleware('auth')->get('/applications', function () {
-    return view('applications');
-})->name('applications')->middleware('verified');
+Route::group(['middleware' => ['auth', 'verified']], function () {
+	Route::get('/applications', function () { return view('applications'); })->name('applications'); //->middleware('verified');
+	Route::get('/settings', 'SsoServiceController@Settings')->name('settings');
+	Route::get('/password/change', 'UserController@showChangePasswordForm')->name('changepasswordget');
+	Route::post('/password/change', 'UserController@submitChangePassword')->name('changepasswordpost');
+});
 
-Route::get('/user/verified', function () {
-    return view('verified');
-})->name('user.verified')->middleware('verified');
+Route::group(['middleware' => ['verified']], function () {
+	Route::get('/user/verified', function () { return view('verified'); })->name('user.verified'); //->middleware('verified');
+});
+
+Auth::routes(['verify' => true, 'register' => false, 'reset' => false]);
+
+// Route::middleware('auth')->get('/settings', 'SsoServiceController@Settings')->name('settings');
+// Route::middleware('auth')->get('/password/change', 'UserController@showChangePasswordForm')->name('changepasswordget');
+// Route::middleware('auth')->post('/password/change', 'UserController@submitChangePassword')->name('changepasswordpost');
+
+// Route::middleware('auth','verified')->get('/applications', function () {
+//     return view('applications');
+// })->name('applications'); //->middleware('verified');
+
+// Route::middleware('verified')->get('/user/verified', function () {
+//     return view('verified');
+// })->name('user.verified'); //->middleware('verified');
